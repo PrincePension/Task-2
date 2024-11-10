@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дата рождения</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; 
+            margin: 0; 
+            font-family: Arial, sans-serif; 
+            background-color: #f0f0f0; 
+        }
+        button {
+            padding: 10px 20px; 
+            font-size: 16px; 
+            cursor: pointer; 
+        }
+    </style>
+</head>
+<body>
+    <h1>Определение даты рождения</h1>
+    <button id="startButton">Введите дату рождения</button>
+    <script>
+        function getDayOfWeek(day, month, year) {
+            const date = new Date(year, month - 1, day);
+            const daysOfWeek = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"];
+            return daysOfWeek[date.getDay()];
+        }
+
+        function isLeapYear(year) {
+            return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+        }
+
+        function calculateAge(birthDate) {
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const hasHadBirthday = today.getMonth() > birthDate.getMonth() || 
+                                  (today.getMonth() === birthDate.getMonth() && today.getDate() >= birthDate.getDate());
+            if (!hasHadBirthday) {
+                age--;
+            }
+            return age;
+        }
+
+        function displayDateStarred(day, month, year) {
+            const dateStr = `${String(day).padStart(2, '0')} ${String(month).padStart(2, '0')} ${year}`;
+            return dateStr.split('').map(char => char === ' ' ? ' ' : '*').join('');
+        }
+
+        document.getElementById("startButton").addEventListener("click", function() {
+            const day = parseInt(prompt("Введите день рождения (1-31): "));
+            const month = parseInt(prompt("Введите месяц рождения (1-12): "));
+            const year = parseInt(prompt("Введите год рождения (например, 1990): "));
+
+            const birthDate = new Date(year, month - 1, day);
+
+            alert(`День недели: ${getDayOfWeek(day, month, year)}`);
+            alert(`Високосный год: ${isLeapYear(year) ? 'Да' : 'Нет'}`);
+            alert(`Возраст: ${calculateAge(birthDate)} лет`);
+            alert(`Дата рождения в звёздочках: ${displayDateStarred(day, month, year)}`);
+        });
+    </script>
+</body>
+</html>
